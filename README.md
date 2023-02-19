@@ -2,7 +2,7 @@
 
 [![Build Status](https://github.com/PivnoyFei/task_for_rishat/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/PivnoyFei/task_for_rishat/actions/workflows/main.yml)
 
-<h1 align="center"><a target="_blank" href="">Тестовое задание для VoxWeb Interactive</a></h1>
+<h1 align="center"><a target="_blank" href="">Тестовое задание для Ришат</a></h1>
 
 #### Приложение будет запущено по адресу: https://kekki.pythonanywhere.com/
 Для регистрации подойдет любая несуществующаа почта
