@@ -78,7 +78,7 @@ class AddItemView(LoginRequiredMixin, View):
             order.save(update_fields=['price_usd'])
 
     def post(self, request: HttpRequest, *args: tuple, **kwargs: dict) -> HttpResponseRedirect:
-        if request.path.split('/')[-1] == 'add':
+        if 'add' in request.path.split('/'):
             order = Order.objects.get_or_create(user=request.user, completed=False)[0]
             amount = AmountItem.objects.get_or_create(order_id=order.id, item_id=kwargs['pk'])
             if not amount[1]:
@@ -86,7 +86,7 @@ class AddItemView(LoginRequiredMixin, View):
                 amount[0].save(update_fields=['amount'])
             self._total_price(order, amount[0], add)
 
-        elif request.path.split('/')[-1] == 'remove':
+        elif 'remove' in request.path.split('/'):
             order = get_object_or_404(Order, user=request.user, completed=False)
             amount = get_object_or_404(AmountItem, order_id=order.id, item_id=kwargs['pk'])
             if amount.amount > 1:

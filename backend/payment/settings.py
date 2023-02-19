@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = f'django-insecure-@{os.getenv("SECRET_KEY", default="key")}'
 
-DEBUG = not os.getenv('DEBUG', default="True").lower() == 'false'
+DEBUG = not os.getenv('DEBUG', default="False").lower() == 'false'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='*, localhost').replace(' ', '').split(',')
 
@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users',
     'pay',
 ]
 
@@ -91,6 +92,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'pay:index'
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / STATIC_URL

@@ -210,9 +210,10 @@ m2m_changed.connect(receiver=Item.item_tax, sender=Item.tax.through)
 
 @receiver(pre_save, sender=Item)
 def item_discount(sender, instance, **kwargs) -> models.Model:
+    if not instance.tax_price:
+        instance.tax_price = instance.price
     instance.final_price = instance.tax_price
     if instance.discount:
         discount = instance.discount.percent
         instance.final_price -= instance.tax_price / 100 * discount
-    print(instance.final_price)
     return instance

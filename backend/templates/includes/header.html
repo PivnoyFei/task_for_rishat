@@ -3,7 +3,6 @@
 
 <header>
     <head>
-      <link rel="stylesheet" href="{% static 'css/search-header.css' %}">
       <nav class="navbar navbar-expand-md navbar-dark bg-black fixed-top shadow">
         <div class="container bg-black">
           <a class="navbar-brand" href="{% url 'pay:index' %}">
@@ -32,10 +31,11 @@
                 <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'pay:order' %}disabled{% endif %}" href="{% url 'pay:order' user.username %}"> Корзина </a></li>
                 <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'pay:order_list' %}disabled{% endif %}" href="{% url 'pay:order_list' user.username %}"> Заказы </a></li>
                 <li class="nav-item active"><a class="nav-link link-light disabled" href="">{{ user.username }}</a></li>
-                {# <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'users:logout' %}disabled{% endif %}" href="{% url 'users:logout' %}">Выйти</a></li> #}
+                <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'users:logout' %}disabled{% endif %}" href="{% url 'users:logout' %}">Выйти</a></li>
               {% else %}
+                <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'users:signup' %}disabled{% endif %}" href="{% url 'users:signup' %}">Зарегистрироваться</a></li>
                 <li class="nav-item active"><a class="nav-link link-light disabled" href=""> Гость </a></li>
-                {# <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'users:login' %}disabled{% endif %}"href="{% url 'users:login' %}">Войти</a></li> #}
+                <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'users:login' %}disabled{% endif %}"href="{% url 'users:login' %}">Войти</a></li>
               {% endif %}
             </ul>
           </div>
@@ -57,6 +57,8 @@
           z-index:3;
         }
       }
+      .nav a:hover { color: Red; }
+      .nav button:hover { color: Red; }
       .d1 form {
           position: relative;
       }
@@ -81,6 +83,12 @@
           border-radius: 0 8px 8px 0;
           top: 2px;
           right: 3px;
+      }
+      .d1 input:focus {
+          border-color: #333;
+      }
+      .d1 input:hover {
+          border-color: #333;
       }
     </style>
   </header>
