@@ -4,6 +4,7 @@ from typing import Callable, Union
 
 import stripe
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import (HttpRequest, HttpResponsePermanentRedirect,
                          HttpResponseRedirect, JsonResponse)
 from django.shortcuts import get_object_or_404, redirect, render
@@ -40,15 +41,30 @@ class ItemDetailView(LoginRequiredMixin, DetailView):
 class IndexListView(ListView):
     """Список товаров и поиск по названию."""
     model = Item
+    paginate_by = 15
     template_name = 'index.html'
     context_object_name = 'page_obj'
 
-    def get_queryset(self) -> Item:
+    def get_context_data(self, **kwargs: dict) -> dict:
+        context = super(IndexListView, self).get_context_data(**kwargs)
+
         if name := self.request.GET.get('search'):
             object_list = self.model.objects.filter(name__icontains=name)
         else:
             object_list = self.model.objects.prefetch_related('tax').all()
-        return object_list
+
+        paginator = Paginator(object_list, self.paginate_by)
+        page = self.request.GET.get('page')
+
+        try:
+            file_exams = paginator.page(page)
+        except PageNotAnInteger:
+            file_exams = paginator.page(1)
+        except EmptyPage:
+            file_exams = paginator.page(paginator.num_pages)
+
+        context[self.context_object_name] = file_exams
+        return context
 
 
 class OrderListView(LoginRequiredMixin, ListView):
