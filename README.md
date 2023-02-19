@@ -4,12 +4,15 @@
 
 <h1 align="center"><a target="_blank" href="">Тестовое задание для VoxWeb Interactive</a></h1>
 
+#### Приложение будет запущено по адресу: https://kekki.pythonanywhere.com/
+Для регистрации подойдет любая несуществующаа почта
+
 ### Стек
 ![Python](https://img.shields.io/badge/Python-171515?style=flat-square&logo=Python)![3.10](https://img.shields.io/badge/3.10-blue?style=flat-square&logo=3.10)
 ![Django](https://img.shields.io/badge/Django-171515?style=flat-square&logo=Django)![4.1.7](https://img.shields.io/badge/4.1.7-blue?style=flat-square&logo=4.1.7)
 ![Django Rest Framework](https://img.shields.io/badge/Django--Rest--Framework-171515?style=flat-square&logo=Django)![3.14.0](https://img.shields.io/badge/3.14.0-blue?style=flat-square&logo=3.14.0)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-171515?style=flat-square&logo=PostgreSQL)![13.0](https://img.shields.io/badge/13.0-blue?style=flat-square&logo=13.0)
 ![SQLite](https://img.shields.io/badge/SQLite-171515?style=flat-square&logo=SQLite)
-![Admin-LTE-3](https://img.shields.io/badge/Admin--LTE--3-171515?style=flat-square&logo=Admin-LTE-3)
 
 ### Задание
 Реализовать Django + Stripe API бэкенд со следующим функционалом и условиями:
@@ -119,7 +122,7 @@ docker-compose exec backend python manage.py migrate --noinput
 docker-compose exec backend python manage.py createsuperuser
 ```
 
-#### После успешной сборки, если админа не работает, на сервере выполните команды (только после первого деплоя):
+#### После успешной сборки, на сервере выполните команды (только после первого деплоя):
 ```bash
 docker-compose exec backend python manage.py collectstatic --noinput
 ```
@@ -154,7 +157,7 @@ python manage.py createsuperuser
 
 #### Запускаем сервер:
 ```bash
-python manage.py runserver
+python manage.py runserver --insecure
 ```
 
 #### При первом запуске парсера потребует ввести номер телефона и код из телеграм:
