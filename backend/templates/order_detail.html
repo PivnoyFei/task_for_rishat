@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load user_filters %}
+  {% block title %} {{ page_obj.order.name }} {% endblock title %}
+  {% block content %}
+
+  {% for amoun in page_obj %}
+
+    <div class="d-grid shadow my-4">
+
+        <form action="{% url 'pay:item' amoun.item.pk %}" method="get">
+            <button type="submit" value="Добавить в корзину" class="grid-item list-group-item list-group-item-action">
+              <h5 class="mb-1">&nbsp;{{ amoun.item.name }}</h5>
+              <p class="mb-1"><description class="game-text">&nbsp;{{ amoun.item.description|truncatechars:117 }}</description></p>
+              {% if amoun.item.discount %}
+                <small style="color:red; font-weight:bold">&nbsp;{{ amoun.item.final_price }} {{ amoun.item.currency }} </small><small style="text-decoration:line-through">{{ amoun.item.tax_price }} {{ amoun.item.currency }}</small>
+              {% else %}
+                <small style="font-weight:bold">&nbsp;{{ amoun.item.final_price }} {{ amoun.item.currency }}</small>
+              {% endif %}
+            </button>
+          </form>
+
+          <div class="list-group-item list-group-item-action">
+            <h5 class="mb-1">&nbsp;Общая цена покупок в рублях: {{ page_obj.0.order.price_rub }} rub</h5>
+            <h5 class="mb-1">&nbsp;Общая цена покупок в долларах: {{ page_obj.0.order.price_usd }} usd</h5>
+          </div>
+
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <div class="grid-item list-group-item btn"><h5 class="mb-1">{{ amoun.amount }} в корзине </h5></div>
+      </div>
+    </div>
+
+  {% endfor %}
+
+  {% endblock content %}

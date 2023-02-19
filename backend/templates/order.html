@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+  {% block title %} Заказ номер: {{ page_obj.0.order.name }} {% endblock title %}
+  {% block content %}
+    <script src="https://js.stripe.com/v3/"></script>
+    <section class="grid">
+      {% for amoun in page_obj %}
+
+          <div class="d-grid shadow my-4">
+              <form action="{% url 'pay:item' amoun.item.pk %}" method="get">
+                <button type="submit" value="Добавить в корзину" class="grid-item list-group-item list-group-item-action">
+                  <h5 class="mb-1">&nbsp;{{ amoun.item.name }}</h5>
+                  <p class="mb-1"><description class="game-text">&nbsp;{{ amoun.item.description|truncatechars:117 }}</description></p>
+                  {% if amoun.item.discount %}
+                    <small style="color:red; font-weight:bold">&nbsp;{{ amoun.item.final_price }} {{ amoun.item.currency }} </small><small style="text-decoration:line-through">{{ amoun.item.tax_price }} {{ amoun.item.currency }}</small>
+                  {% else %}
+                    <small style="font-weight:bold">&nbsp;{{ amoun.item.final_price }} {{ amoun.item.currency }}</small>
+                  {% endif %}
+                </button>
+              </form>
+
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <form action="{% url 'pay:remove_item' amoun.item.pk %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="btn grid-item list-group-item"><h5 class="mb-1"> - </h5></button>
+                </form>
+                <div class="grid-item list-group-item btn"><h5 class="mb-1">{{ amoun.amount }} в корзине </h5></div>
+                <form action="{% url 'pay:add_item' amoun.item.pk %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="btn grid-item list-group-item"><h5 class="mb-1"> + </h5></button>
+                </form>
+              </div>
+          </div>
+
+      {% endfor %}
+
+        <div class="d-grid shadow my-4">
+            <div class="list-group-item list-group-item-action">
+                <h5 class="mb-1">&nbsp;Общая цена покупок в рублях: {{ page_obj.0.order.price_rub }} rub</h5>
+                <h5 class="mb-1">&nbsp;Общая цена покупок в долларах: {{ page_obj.0.order.price_usd }} usd</h5>
+            </div>
+
+            <div class="btn-group" role="group" aria-label="Basic example">
+              {% for currency in currency_obj %}
+              {% csrf_token %}
+                <button class="grid-item list-group-item btn" id="buy-button-{{ page_obj.0.order.pk }}{{ currency.currency }}">
+                  <h5 class="mb-1">Купить все в: {{ currency.total_price }} {{ currency.currency }} </h5>
+                </button>
+                <script type="text/javascript">
+                  var stripe = Stripe( '{{ STRIPE_PUBLIC_KEY }}' );
+                  var buyButton = document.getElementById('buy-button-{{ page_obj.0.order.pk }}{{ currency.currency }}');
+                  buyButton.addEventListener('click', function() {
+                    fetch("{% url 'pay:buy' page_obj.0.order.pk %}?currency={{ currency.currency }}", {method: 'GET'})
+                    .then(function (response) {return response.json();})
+                    .then(function (session) {return stripe.redirectToCheckout({ sessionId: session.id });})
+                  });
+                </script>
+              {% endfor %}
+
+            </div>
+          </div>
+    </section>
+
+    {% include "includes/paginator.html" %}
+  {% endblock content %}

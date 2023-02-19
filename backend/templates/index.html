@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+  {% block title %} Все товары {% endblock title %}
+  {% block content %}
+
+    <section class="grid">
+      {% for item in page_obj %}
+
+        <form action="{% url 'pay:item' item.pk %}" method="get">
+          <button type="submit" value="Добавить в корзину" class="grid-item list-group-item list-group-item-action">
+            <h5 class="mb-1">&nbsp;{{ item.name }}</h5>
+            <p class="mb-1"><description class="game-text">&nbsp;{{ item.description|truncatechars:117 }}</description></p>
+            {% if item.discount %}
+              <small style="color:red; font-weight:bold">&nbsp;{{ item.final_price }} {{ item.currency }} </small><small style="text-decoration:line-through">{{ item.tax_price }} {{ item.currency }}</small>
+            {% else %}
+              <small style="font-weight:bold">&nbsp;{{ item.final_price }} {{ item.currency }}</small>
+            {% endif %}
+          </button>
+        </form>
+
+      {% endfor %}
+    </section>
+
+    {% include "includes/paginator.html" %}
+  {% endblock content %}

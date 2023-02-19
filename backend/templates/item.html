@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load user_filters %}
+  {% block title %} {{ item.name }} {% endblock title %}
+  {% block content %}
+
+    <article>
+      {% if count_cart %}
+
+          <div class="d-grid shadow my-4">
+
+            <div class="list-group-item list-group-item-action">
+              <h5 class="mb-1">&nbsp;{{ item.name }}</h5>
+              <p class="mb-1"><description class="game-text">&nbsp;{{ item.description }}</description></p>
+              {% if item.discount %}
+                <small style="color:red; font-weight:bold">&nbsp;{{ item.final_price }} {{ item.currency }} </small><small style="text-decoration:line-through">{{ item.tax_price }} {{ item.currency }}</small>
+              {% else %}
+                <small style="font-weight:bold">&nbsp;{{ item.final_price }} {{ item.currency }}</small>
+              {% endif %}
+            </div>
+
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <form action="{% url 'pay:remove_item' item.pk %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="btn grid-item list-group-item"><h5 class="mb-1"> - </h5></button>
+                </form>
+                <div class="grid-item list-group-item btn"><h5 class="mb-1">{{ count_cart }} в корзине </h5></div>
+                <form action="{% url 'pay:add_item' item.pk %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="btn grid-item list-group-item"><h5 class="mb-1"> + </h5></button>
+                </form>
+              </div>
+          </div>
+
+      {% else %}
+      
+        <form action="{% url 'pay:add_item' item.pk %}" method="post">
+
+          <div class="d-grid shadow my-4">
+
+            <div class="list-group-item list-group-item-action">
+              <h5 class="mb-1">&nbsp;{{ item.name }}</h5>
+              <p class="mb-1"><description class="game-text">&nbsp;{{ item.description }}</description></p>
+              {% if item.discount %}
+                <small style="color:red; font-weight:bold">&nbsp;{{ item.final_price }} {{ item.currency }} </small><small style="text-decoration:line-through">{{ item.tax_price }} {{ item.currency }}</small>
+              {% else %}
+                <small style="font-weight:bold">&nbsp;{{ item.final_price }} {{ item.currency }}</small>
+              {% endif %}
+            </div>
+
+              {% csrf_token %}
+              <button type="submit" class="grid-item list-group-item btn"><h5 class="mb-1">В корзину</h5></button>
+          </div>
+
+        </form>
+
+      {% endif %}
+    </article>
+
+  {% endblock content %}

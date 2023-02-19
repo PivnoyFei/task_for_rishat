@@ -1,0 +1,88 @@
+{% load static %}
+{% with request.resolver_match.view_name as view_name %}
+
+<header>
+    <head>
+      <link rel="stylesheet" href="{% static 'css/search-header.css' %}">
+      <nav class="navbar navbar-expand-md navbar-dark bg-black fixed-top shadow">
+        <div class="container bg-black">
+          <a class="navbar-brand" href="{% url 'pay:index' %}">
+            <span style="color:white; font-size: 22px;"=>Rishat</a>
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar1">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+        <div class="collapse navbar-collapse" id="navbar1">
+  
+          <div class="navbar-collapse justify-content-center" id="navbar1">
+            <div class="d1 col-md-5 w-100">
+              <form action="{% url 'pay:index' %}" method="get" accept-charset="utf-8">
+                <div class="input-group">
+                  <input type="text" class="form-control border-right-0" name="search" placeholder="Поиск товара" type="search" aria-label="Search">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-primary border-left-0" type="submit"><img src="{% static 'img/search.svg' %}" height="18" width="18"></button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+  
+            <ul class="nav nav-pills justify-content-end">
+              {% if user.is_authenticated %}
+                <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'pay:order' %}disabled{% endif %}" href="{% url 'pay:order' user.username %}"> Корзина </a></li>
+                <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'pay:order_list' %}disabled{% endif %}" href="{% url 'pay:order_list' user.username %}"> Заказы </a></li>
+                <li class="nav-item active"><a class="nav-link link-light disabled" href="">{{ user.username }}</a></li>
+                {# <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'users:logout' %}disabled{% endif %}" href="{% url 'users:logout' %}">Выйти</a></li> #}
+              {% else %}
+                <li class="nav-item active"><a class="nav-link link-light disabled" href=""> Гость </a></li>
+                {# <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'users:login' %}disabled{% endif %}"href="{% url 'users:login' %}">Войти</a></li> #}
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </head>
+    <style>
+      .navbar {
+        height: 45px;
+      }
+      @media (max-width: 767px) {
+        .navbar-brand {
+          position: absolute;
+          width: 100%;
+          left: 0;
+          text-align: center;
+        }
+        .navbar-toggler {
+          z-index:3;
+        }
+      }
+      .d1 form {
+          position: relative;
+      }
+      .d1 input {
+          color: white;
+          width: 400px;
+          height: 30px;
+          padding: 15px;
+          padding-left: 15px;
+          border-radius: 10px;
+          background: #222;
+          font-size: 15px;
+          outline: 1px;
+          border: 2px solid #000;
+      }
+      .d1 button {
+          position: absolute; 
+          height: 30px;
+          width: 40px;
+          border: none;
+          background: #333;
+          border-radius: 0 8px 8px 0;
+          top: 2px;
+          right: 3px;
+      }
+    </style>
+  </header>
+
+{% endwith %}

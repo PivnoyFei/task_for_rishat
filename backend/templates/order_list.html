@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+  {% block title %} Все заказы {% endblock title %}
+  {% block content %}
+  <script src="https://js.stripe.com/v3/"></script>
+
+    <section class="grid">
+      {% for order in page_obj %}
+        {% if order.completed %}
+          <div class="d-grid shadow my-4">
+            <form action="{% url 'pay:order' user.username %}" method="get">
+              <button type="submit" name="order_id" value="{{ order.pk }}" class="list-group-item list-group-item-action">
+                <h5 class="mb-1">&nbsp;{{ order.name }}</h5>
+                <small style="font-weight:bold">&nbsp;{{ order.created }}</small>
+                <small style="font-weight:bold">&nbsp;Выполнен</small>
+              </button>
+            </form>
+
+            {% csrf_token %}
+            <button id="buy-button-{{ order.pk }}" class="grid-item list-group-item btn"><h5 class="mb-1">Повторить</h5></button>
+
+            <script type="text/javascript">
+              var stripe = Stripe( '{{ STRIPE_PUBLIC_KEY }}' );
+              var buyButton = document.getElementById('buy-button-{{ order.pk }}');
+              buyButton.addEventListener('click', function() {
+                fetch("{% url 'pay:buy' order.pk %}?currency={{ order.currency }}", {method: 'GET'})
+                .then(function (response) {return response.json();})
+                .then(function (session) {return stripe.redirectToCheckout({ sessionId: session.id });})
+              });
+            </script>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </section>
+
+    {% include "includes/paginator.html" %}
+  {% endblock content %}

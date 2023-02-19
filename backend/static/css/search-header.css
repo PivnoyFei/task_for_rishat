@@ -1,0 +1,33 @@
+.nav a:hover { color: Red; }
+.nav button:hover { color: Red; }
+.d1 form {
+    position: relative;
+}
+.d1 input {
+    color: white;
+    width: 400px;
+    height: 30px;
+    padding: 15px;
+    padding-left: 15px;
+    border-radius: 10px;
+    background: #222;
+    font-size: 15px;
+    outline: 1px;
+    border: 2px solid #000;
+}
+.d1 button {
+    position: absolute; 
+    height: 30px;
+    width: 40px;
+    border: none;
+    background: #333;
+    border-radius: 0 8px 8px 0;
+    top: 2px;
+    right: 3px;
+}
+.d1 input:focus {
+    border-color: #333;
+}
+.d1 input:hover {
+    border-color: #333;
+}
